@@ -1,7 +1,7 @@
 package mmgraphpt
 
 import (
-	"github.com/takoyaki-3/goraph"
+	"github.com/takoyaki-3/mmGraphpt/goraph"
 )
 
 type Stop struct {
@@ -14,6 +14,5 @@ type PTGraph struct {
 	Stops        map[int64]Stop // 停留所に指定されているポイント
 	StopId2Place map[string]int64
 	// SameNode		 map[int64][]MultiNode // マルチグラフ化した場合の共通ノードリスト
-	GraphId			 int									 // マルチグラフ化した場合のグラフID
+	GraphId int // マルチグラフ化した場合のグラフID
 }
-

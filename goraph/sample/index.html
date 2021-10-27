@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<!-- https://qiita.com/anagura0000/items/2e9dfbd38132c1339c7a に掲載されているコードを改変-->
+<html>
+<head>
+  <meta charset='utf-8' />
+  <title>Goraph test</title>
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.css' rel='stylesheet' />
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <style>
+  body { margin:0; padding:0; }
+  #map { position:absolute; top:0; bottom:0; width:100%; }
+  </style>
+</head>
+<body>
+
+<div id='map'></div>
+
+<script>
+  mapboxgl.accessToken = '[Mapbox token]';
+  let map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v9',
+    zoom: 14,
+    center: [139.7639394, 35.6840311]
+  });
+
+  url = "http://localhost:8000/search?";
+
+  let fromMarker = new mapboxgl.Marker();
+  let toMarker = new mapboxgl.Marker();
+  let layers = [];
+
+  map.on('load', function () {
+
+    let addFromMarker = false;
+    let route = {}
+
+    map.on('click', function(e) {
+
+      if (!addFromMarker){
+
+        // marker
+        fromMarker.remove();
+        toMarker.remove();
+
+        // route
+        for(let i=0;i<layers.length;i++){
+          if (map.getLayer(layers[i])){
+            map.removeLayer(layers[i]);
+          }
+          if (map.getSource(layers[i])){
+            map.removeSource(layers[i]);
+          }
+        }
+        route.from = [e.lngLat.lng, e.lngLat.lat];
+
+        fromMarker = new mapboxgl.Marker()
+        .setLngLat(route.from)
+        .addTo(map);
+        addFromMarker = true;
+      }else{
+
+        route.to = [e.lngLat.lng, e.lngLat.lat];
+        toMarker = new mapboxgl.Marker()
+        .setLngLat(route.to)
+        .addTo(map);
+
+        addRouting(route.from, route.to);
+        addFromMarker = false;
+      }
+
+
+    });
+  });
+
+  // 経路を検索して経路を描画する
+  const addRouting = function(fromPoint, toPoint){
+
+    const polyline = {};
+    const aurl = url + "from_lat=" + fromPoint[1] + "&from_lon=" + fromPoint[0] + "&" + "to_lat="+toPoint[1]+"&to_lon="+toPoint[0]
+
+    $.ajax({
+      type : "POST",
+      url : aurl,
+    })
+    .done(function( data ) {
+
+      polyline.data = data;
+
+      layers = [];
+      const colors = ["#800","#888"];
+
+      layers.push("route");
+      map.addLayer({
+        "id": "route",
+        "type": "line",
+        "source": {
+          "type": "geojson",
+          "data": data
+        },
+        "layout": {
+          "line-join": "round",
+          "line-cap": "round"
+        },
+        "paint": {
+          "line-color": colors[0],
+          "line-width": 8
+        }
+      });
+    });
+  }
+  </script>
+</body>
+</html>

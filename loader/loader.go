@@ -1,12 +1,13 @@
 package loader
 
 import (
-	"log"
 	"io/ioutil"
-	"github.com/takoyaki-3/goraph"
-	"github.com/takoyaki-3/mmGraphpt/pb"
-	. "github.com/takoyaki-3/mmGraphpt"
+	"log"
+
 	"github.com/golang/protobuf/proto"
+	. "github.com/takoyaki-3/mmGraphpt"
+	"github.com/takoyaki-3/mmGraphpt/goraph"
+	"github.com/takoyaki-3/mmGraphpt/pb"
 )
 
 // Load Protocol Buffer
