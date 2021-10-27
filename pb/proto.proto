@@ -1,0 +1,43 @@
+syntax = "proto3";
+package pb;
+
+message PTGraph {
+	Graph map = 1;
+  repeated Stop stop = 2;
+  repeated SamePlace SamePlaces = 3;
+}
+
+message SamePlace {
+  int64 place = 1;
+  repeated MultiPlace SamePlaces = 2;
+}
+
+message MultiPlace {
+  int32 graphid = 1;
+  int64 place = 2;
+}
+
+message Stop {
+  int64 id = 1;
+  string Name = 2;
+  string StopId = 3;
+}
+
+message Graph {
+  repeated Edge edge = 1;
+  repeated LatLon latlon = 2;
+}
+
+message Edge {
+  int64 edge_id = 1;
+  int64 from = 2;
+  int64 to = 3;
+  double cost = 4;
+  repeated int64 point_id = 5;
+}
+
+message LatLon {
+  int64 latlon_id = 1;
+  double lat = 2;
+  double lon = 3;
+}
