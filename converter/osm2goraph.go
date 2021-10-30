@@ -3,11 +3,11 @@ package converter
 import (
 	"fmt"
 
-	"github.com/takoyaki-3/mmGraphpt/goraph/loader"
-	"github.com/takoyaki-3/mmGraphpt/goraph/loader/osm"
+	"github.com/takoyaki-3/goraph/loader"
+	"github.com/takoyaki-3/goraph/loader/osm"
 )
 
-func Osm2goraph(inputFileName string,outputFileName string){
+func Osm2goraph(inputFileName string, outputFileName string) {
 	// OSMの読み込み
 	g := osm.Load(inputFileName)
 	fmt.Println(len(g.LatLons))

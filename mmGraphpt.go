@@ -1,7 +1,7 @@
 package mmgraphpt
 
 import (
-	"github.com/takoyaki-3/mmGraphpt/goraph"
+	"github.com/takoyaki-3/goraph"
 )
 
 type Stop struct {

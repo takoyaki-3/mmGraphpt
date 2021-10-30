@@ -1,5 +1,5 @@
 syntax = "proto3";
-package pb;
+package pbf;
 
 message PTGraph {
 	Graph map = 1;

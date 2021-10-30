@@ -5,9 +5,9 @@ import (
 	"log"
 
 	"github.com/golang/protobuf/proto"
+	"github.com/takoyaki-3/goraph"
 	. "github.com/takoyaki-3/mmGraphpt"
-	"github.com/takoyaki-3/mmGraphpt/goraph"
-	"github.com/takoyaki-3/mmGraphpt/pb"
+	"github.com/takoyaki-3/mmGraphpt/pbf"
 )
 
 // Load Protocol Buffer
@@ -17,7 +17,7 @@ func Load(filename string) PTGraph {
 	if err != nil {
 		log.Fatalln("Error reading file:", err)
 	}
-	ptgraph := &pb.PTGraph{}
+	ptgraph := &pbf.PTGraph{}
 	if err := proto.Unmarshal(in, ptgraph); err != nil {
 		log.Fatalln("Failed to parse graph:", err)
 	}
@@ -75,10 +75,10 @@ func Load(filename string) PTGraph {
 func Write(filename string, ptg PTGraph) {
 	// ...
 	id := int64(0)
-	edge := []*pb.Edge{}
+	edge := []*pbf.Edge{}
 	for k, v := range ptg.Map.Edges {
 		for _, v := range v {
-			edge = append(edge, &pb.Edge{
+			edge = append(edge, &pbf.Edge{
 				EdgeId: id,
 				From:   int64(k),
 				To:     v.To,
@@ -87,9 +87,9 @@ func Write(filename string, ptg PTGraph) {
 			id++
 		}
 	}
-	latlon := []*pb.LatLon{}
+	latlon := []*pbf.LatLon{}
 	for k, v := range ptg.Map.LatLons {
-		latlon = append(latlon, &pb.LatLon{
+		latlon = append(latlon, &pbf.LatLon{
 			LatlonId: int64(k),
 			Lat:      v.Lat,
 			Lon:      v.Lon,
@@ -97,15 +97,15 @@ func Write(filename string, ptg PTGraph) {
 	}
 
 	// PTG
-	ptgraph := &pb.PTGraph{
-		Map: &pb.Graph{
+	ptgraph := &pbf.PTGraph{
+		Map: &pbf.Graph{
 			Edge:   edge,
 			Latlon: latlon,
 		},
 	}
 
 	for id, s := range ptg.Stops {
-		ptgraph.Stop = append(ptgraph.Stop, &pb.Stop{
+		ptgraph.Stop = append(ptgraph.Stop, &pbf.Stop{
 			Id:     id,
 			Name:   s.Name,
 			StopId: s.StopId,
