@@ -16,3 +16,10 @@ type PTGraph struct {
 	// SameNode		 map[int64][]MultiNode // マルチグラフ化した場合の共通ノードリスト
 	GraphId int // マルチグラフ化した場合のグラフID
 }
+
+func NewPTGraph() *PTGraph {
+	ptg := PTGraph{}
+	ptg.Stops = map[int64]Stop{}
+	return &ptg
+}
+
