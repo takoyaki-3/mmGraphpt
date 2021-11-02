@@ -2,7 +2,6 @@ package loader
 
 import (
 	"io/ioutil"
-	"log"
 	"errors"
 
 	"github.com/golang/protobuf/proto"
