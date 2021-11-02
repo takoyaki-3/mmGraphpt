@@ -3,6 +3,7 @@ package loader
 import (
 	"io/ioutil"
 	"log"
+	"errors"
 
 	"github.com/golang/protobuf/proto"
 	"github.com/takoyaki-3/goraph"
@@ -11,15 +12,15 @@ import (
 )
 
 // Load Protocol Buffer
-func Load(filename string) PTGraph {
+func Load(filename string) (PTGraph,error) {
 	// Read the existing graph.
 	in, err := ioutil.ReadFile(filename)
 	if err != nil {
-		log.Fatalln("Error reading file:", err)
+		return PTGraph{},errors.New("Error reading file")
 	}
 	ptgraph := &pbf.PTGraph{}
 	if err := proto.Unmarshal(in, ptgraph); err != nil {
-		log.Fatalln("Failed to parse graph:", err)
+		return PTGraph{},errors.New("Failed to parse graph")
 	}
 
 	edges := [][]goraph.Edge{}
@@ -68,11 +69,11 @@ func Load(filename string) PTGraph {
 	// 	}
 	// }
 
-	return g
+	return g,nil
 }
 
 // Write to Protocol Buffer
-func Write(filename string, ptg PTGraph) {
+func Write(filename string, ptg PTGraph) error {
 	// ...
 	id := int64(0)
 	edge := []*pbf.Edge{}
@@ -131,9 +132,10 @@ func Write(filename string, ptg PTGraph) {
 	// Write the new address book back to disk.
 	out, err := proto.Marshal(ptgraph)
 	if err != nil {
-		log.Fatalln("Failed to encode address book:", err)
+		return err
 	}
 	if err := ioutil.WriteFile(filename, out, 0644); err != nil {
-		log.Fatalln("Failed to write address book:", err)
+		return err
 	}
+	return nil
 }
