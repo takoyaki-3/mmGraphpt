@@ -21,6 +21,7 @@ message Stop {
   int64 id = 1;
   string Name = 2;
   string StopId = 3;
+  string ZoneId = 4;
 }
 
 message Graph {

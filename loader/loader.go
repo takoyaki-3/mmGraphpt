@@ -52,7 +52,8 @@ func Load(filename string) (PTGraph,error) {
 	for _, v := range ptgraph.Stop {
 		g.Stops[v.Id] = Stop{
 			Name:   v.Name,
-			StopId: v.StopId}
+			StopId: v.StopId,
+			ZoneId: v.ZoneId}
 		g.StopId2Place[v.StopId] = v.Id
 	}
 
@@ -109,6 +110,7 @@ func Write(filename string, ptg PTGraph) error {
 			Id:     id,
 			Name:   s.Name,
 			StopId: s.StopId,
+			ZoneId: s.ZoneId,
 		})
 	}
 
