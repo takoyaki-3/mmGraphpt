@@ -1,6 +1,0 @@
-package converter
-
-import (
-	
-)
-

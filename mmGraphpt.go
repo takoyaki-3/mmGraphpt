@@ -6,6 +6,7 @@ import (
 
 type Stop struct {
 	StopId string
+	ZoneId string
 	Name   string
 }
 
